@@ -1,16 +1,19 @@
+// npm and node packages
 const inquirer = require('inquirer');
 const fs = require('fs');
+
+// Objects
 
 const inqPrompts = [
     {
         type: 'input',
         message: 'Enter up to THREE CHARACTERS for the logo',
-        name: 'logoText'
+        name: 'text'
     },
     {
         type: 'input',
         message: 'Enter a COLOR (or HEX CODE) for the logo\'s TEXT',
-        name: 'color'
+        name: 'textColor'
     },
     {
         type: 'list',
@@ -21,9 +24,20 @@ const inqPrompts = [
     {
         type: 'input',
         message: 'Enter a COLOR (or HEX CODE) for the logo\'s SHAPE',
-        name: 'color'
+        name: 'shapeColor'
     },
 ];
+
+const writeLogo = (data) => {
+    fs.writeFile('logo.svg', data, (err) =>{
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Generated logo.svg');
+        }
+    });
+}
 
 const init = () => {
     inquirer
