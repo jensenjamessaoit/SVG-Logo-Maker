@@ -1,0 +1,11 @@
+{
+  "name": "svg-logo-maker",
+  "author": "jensenjamessaoit",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.10",
+    "jest": "^29.6.4"
+  }
+}
