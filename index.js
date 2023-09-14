@@ -3,16 +3,42 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const { Square, Circle, Triangle } = require('./lib/shapes');
 
+// Color validator
+const colorVal = (input) => {
+    // hexcode or color regular expression
+    const colorRegex = /^(#[0-9A-Fa-f]{3,6}|[a-zA-Z]+)$/;
+    
+    if(colorRegex.test(input)) {
+        return true;
+    }
+    else {
+        return 'Enter a valid COLOR or HEX CODE.'
+    }
+}
+
+
+// prompts
 const inqPrompts = [
     {
         type: 'input',
         message: 'Enter up to THREE CHARACTERS for the logo',
-        name: 'text'
+        name: 'text',
+        validate: (input) => {
+            text = /^.{1,3}$/
+
+            if(text.test(input)) {
+                return true;
+            }
+            else {
+                return 'Enter ONLY up to THREE CHARACTERS!!!!!!!!!'
+            }
+        }
     },
     {
         type: 'input',
         message: 'Enter a COLOR (or HEX CODE) for the logo\'s TEXT',
-        name: 'textColor'
+        name: 'textColor',
+        validate: colorVal
     },
     {
         type: 'list',
@@ -23,10 +49,14 @@ const inqPrompts = [
     {
         type: 'input',
         message: 'Enter a COLOR (or HEX CODE) for the logo\'s SHAPE',
-        name: 'shapeColor'
-    },
+        name: 'shapeColor',
+        validate: colorVal
+    }
 ];
 
+
+
+// Writes file
 const writeToFile = (data) => {
     fs.writeFile('./examples/logo.svg', data, (err) =>{
         if (err) {
@@ -38,21 +68,41 @@ const writeToFile = (data) => {
     });
 }
 
+
+// main
 const init = () => {
     inquirer
         .prompt(inqPrompts)
         .then((res) => {
+            // text color
+            let textColor = '';
+            if(res.textColor.includes('#')) {
+                textColor = res.textColor;
+            }
+            else {
+                textColor = res.textColor.toLowerCase();
+            }
+            
+            // shape color
+            let shapeColor = '';
+            if(res.shapeColor.includes('#')) {
+                shapeColor = res.shapeColor;
+            }
+            else {
+                shapeColor = res.shapeColor.toLowerCase();
+            }
+
             switch (res.shape) {
                 case 'square':
-                    const square =  new Square(res.text, res.textColor, res.shapeColor);
+                    const square =  new Square(res.text, textColor, shapeColor);
                     writeToFile(square.create());
                     break;
                 case 'circle':
-                    const circle = new Circle(res.text, res.textColor, res.shapeColor);
+                    const circle = new Circle(res.text, textColor, shapeColor);
                     writeToFile(circle.create());
                     break;
                 case 'triangle':
-                    const triangle = new Triangle(res.text, res.textColor, res.shapeColor);
+                    const triangle = new Triangle(res.text, textColor, shapeColor);
                     writeToFile(triangle.create());
                     break;
             };
