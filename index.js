@@ -95,15 +95,15 @@ const init = () => {
             switch (res.shape) {
                 case 'square':
                     const square =  new Square(res.text, textColor, shapeColor);
-                    writeToFile(square.create());
+                    writeToFile(square.render());
                     break;
                 case 'circle':
                     const circle = new Circle(res.text, textColor, shapeColor);
-                    writeToFile(circle.create());
+                    writeToFile(circle.render());
                     break;
                 case 'triangle':
                     const triangle = new Triangle(res.text, textColor, shapeColor);
-                    writeToFile(triangle.create());
+                    writeToFile(triangle.render());
                     break;
             };
         });
